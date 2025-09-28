@@ -23,4 +23,6 @@ func Load() Config {
 	return Config{Port: port, SessionKey: []byte(key)}
 }
 
-func (c Config) Addr() string { return ":" + c.Port }
+func (c Config) Addr() string {
+	return ":" + c.Port
+}

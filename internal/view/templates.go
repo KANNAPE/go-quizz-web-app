@@ -1,16 +1,12 @@
 package view
 
 import (
-	"embed"
 	"html/template"
 	"net/http"
-	"path/filepath"
+	"path"
+
+	"quizz-app/m/web"
 )
-
-// /go:embed quizz-app/m/web/templates/*.html
-var templatesFS embed.FS
-
-var staticFS embed.FS
 
 type Views struct {
 	cache  map[string]*template.Template
@@ -20,14 +16,14 @@ type Views struct {
 func New() *Views {
 	v := &Views{
 		cache:  map[string]*template.Template{},
-		static: http.FS(staticFS),
+		static: http.FS(web.Static),
 	}
-	pages := []string{"index.html", "contact.html", "lobby.html"}
+	pages := []string{"index.html", "about.html", "contact.html", "lobby.html"}
 
 	for _, page := range pages {
-		t, err := template.ParseFS(templatesFS,
-			"web/templates/layout.html",
-			filepath.Join("web/templates", page),
+		t, err := template.ParseFS(web.Templates,
+			"templates/layout.html",
+			path.Join("templates", page),
 		)
 		if err != nil {
 			panic(err)
