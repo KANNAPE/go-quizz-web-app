@@ -1,0 +1,11 @@
+{{ define "title" }}Home - My Go Web App{{ end }}
+
+{{ define "content" }}
+<h1>Welcome!</h1>
+<p>Enter a username to create a lobby:</p>
+
+<form action="/lobby" method="POST">
+  <input type="text" name="username" placeholder="Enter username">
+  <button type="submit">Create Lobby</button>
+</form>
+{{ end }}

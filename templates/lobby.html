@@ -1,0 +1,9 @@
+{{ define "title" }}Lobby - {{ .LobbyID }}{{ end }}
+
+{{ define "content" }}
+<h1>Lobby ID: {{ .LobbyID }}</h1>
+<p>Welcome, {{ .Username }}!</p>
+
+<p>Share this link with friends to join:</p>
+<pre>{{ .JoinURL }}</pre>
+{{ end }}
