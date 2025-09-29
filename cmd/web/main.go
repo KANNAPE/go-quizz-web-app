@@ -4,7 +4,9 @@ import (
 	"log"
 	"net/http"
 
+	"quizz-app/m/internal/chat"
 	"quizz-app/m/internal/config"
+	"quizz-app/m/internal/handlers"
 	"quizz-app/m/internal/httpx"
 	"quizz-app/m/internal/lobby"
 	"quizz-app/m/internal/session"
@@ -17,8 +19,11 @@ func main() {
 	views := view.New()             // parse+cache templates from embed
 	store := lobby.NewMemoryStore() // swap later for Redis/DB
 	sess := session.New(cfg.SessionKey)
+	chat := chat.NewHub()
 
-	router := httpx.NewRouter(cfg, views, store, sess)
+	handler := handlers.New(views, store, sess, chat)
+
+	router := httpx.NewRouter(handler)
 
 	log.Printf("listening on %s", cfg.Addr())
 	if err := http.ListenAndServe(cfg.Addr(), router); err != nil {

@@ -4,17 +4,13 @@ import (
 	"io/fs"
 	"net/http"
 
-	"quizz-app/m/internal/config"
 	"quizz-app/m/internal/handlers"
-	"quizz-app/m/internal/lobby"
-	"quizz-app/m/internal/session"
-	"quizz-app/m/internal/view"
 	"quizz-app/m/web"
 
 	"github.com/gorilla/mux"
 )
 
-func NewRouter(cfg config.Config, v *view.Views, store lobby.Store, sess *session.Manager) http.Handler {
+func NewRouter(handler *handlers.Handlers) http.Handler {
 	r := mux.NewRouter()
 
 	// middleware
@@ -32,14 +28,11 @@ func NewRouter(cfg config.Config, v *view.Views, store lobby.Store, sess *sessio
 	fileServer := http.FileServer(http.FS(staticSub))
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", fileServer))
 
-	// handlers
-	h := handlers.New(v, store, sess)
-
-	r.HandleFunc("/", h.Home).Methods("GET")
-	r.HandleFunc("/about", h.About).Methods("GET")
-	r.HandleFunc("/contact", h.Contact).Methods("GET", "POST")
-	r.HandleFunc("/lobby", h.CreateLobby).Methods("POST")
-	r.HandleFunc("/lobby/{id}", h.Lobby).Methods("GET")
+	r.HandleFunc("/", handler.Home).Methods("GET")
+	r.HandleFunc("/about", handler.About).Methods("GET")
+	r.HandleFunc("/contact", handler.Contact).Methods("GET", "POST")
+	r.HandleFunc("/lobby", handler.CreateOrJoinLobby).Methods("POST")
+	r.HandleFunc("/lobby/{id}", handler.Lobby).Methods("GET")
 
 	return r
 }

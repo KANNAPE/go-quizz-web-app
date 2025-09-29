@@ -6,7 +6,9 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-type Manager struct{ store *sessions.CookieStore }
+type Manager struct {
+	store *sessions.CookieStore
+}
 
 func New(key []byte) *Manager {
 	cs := sessions.NewCookieStore(key)
