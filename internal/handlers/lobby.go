@@ -27,14 +27,17 @@ func (h *Handlers) Lobby(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	username := h.sess.Username(r)
+	joinURL := util.BaseURL(r) + "/lobby/" + l.ID
+
 	data := struct {
 		LobbyID  string
 		Username string
 		JoinURL  string
 	}{
 		LobbyID:  l.ID,
-		Username: h.sess.Username(r),
-		JoinURL:  util.BaseURL(r) + "/lobby/" + l.ID, // no hardcoding
+		Username: username,
+		JoinURL:  joinURL,
 	}
 	h.v.Render(w, "lobby.html", data)
 }

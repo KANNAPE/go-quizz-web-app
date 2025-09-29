@@ -12,7 +12,7 @@ type Config struct {
 func Load() Config {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "80"
+		port = "8080"
 	}
 
 	key := os.Getenv("SESSION_KEY")
@@ -20,7 +20,10 @@ func Load() Config {
 		key = "dev-only-change-me"
 	}
 
-	return Config{Port: port, SessionKey: []byte(key)}
+	return Config{
+		Port:       port,
+		SessionKey: []byte(key),
+	}
 }
 
 func (c Config) Addr() string {

@@ -10,7 +10,7 @@ type Manager struct{ store *sessions.CookieStore }
 
 func New(key []byte) *Manager {
 	cs := sessions.NewCookieStore(key)
-	cs.Options.HttpOnly = true
+	cs.Options.Secure = true
 	cs.Options.SameSite = http.SameSiteLaxMode
 	return &Manager{store: cs}
 }
